@@ -1,0 +1,89 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        height: 100%;
+      }
+
+      #player {
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+
+      #progress {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        height: 3px;
+        background: rgba(255,0,0,0.5);
+        width: 0;
+        z-index: 1;
+      }
+    </style>
+  </head>
+  <body>
+    <script src="https://www.youtube.com/iframe_api" type="text/javascript"></script>
+
+    <div id="player"></div>
+    <div id="progress"></div>
+
+    <script>
+      var player;
+      var width = window.innerWidth;
+      var height = window.innerHeight;
+
+      function onYouTubeIframeAPIReady() {
+        player = new YT.Player('player', {
+          height: height,
+          width: width,
+          videoId: '{{ videoID }}',
+          events: {
+            onReady: onPlayerReady,
+            onStateChange: onPlayerStateChange
+          },
+          playerVars: {
+            autoplay: 1,        // Play automatically
+            modestBranding: 1,  // Don't show most Youtube branding
+            controls: 0,        // Don't show controls
+            iv_load_policy: 0,  // Don't know annotations
+            rel: 0,             // Don't show suggestions after the video
+          }
+        });
+        setInterval(progress, 100);
+      }
+
+      function onPlayerReady(evt) {
+        transmit('timer.stop');
+      }
+
+      function onPlayerStateChange(evt) {
+        if (evt.data === 0) {
+          transmit('timer.start');
+        }
+      }
+
+      function progress() {
+        var percent = player.getCurrentTime() / player.getDuration();
+        var width = percent * 100 + 'vw';
+        document.querySelector('#progress').style.width = percent * 100 + 'vw';
+      }
+
+      function transmit(name, args) {
+        if ('parent' in window) {
+          window.parent.postMessage({
+            'corsica': true,
+            'message': name,
+            'args': args
+          }, '*');
+        }
+      }
+
+    </script>
+  </body>
+</html>

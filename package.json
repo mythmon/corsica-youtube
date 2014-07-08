@@ -1,0 +1,19 @@
+{
+  "name": "corsica-youtube",
+  "version": "0.1.0",
+  "description": "Make Youtube links more friendly.",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mythmon/corsica-youtube.git"
+  },
+  "keywords": [
+    "corsica"
+  ],
+  "author": "Mike Cooper <mythmon@gmail.com>",
+  "license": "MPL2",
+  "bugs": {
+    "url": "https://github.com/mythmon/corsica-youtube/issues"
+  },
+  "homepage": "https://github.com/mythmon/corsica-youtube"
+}
